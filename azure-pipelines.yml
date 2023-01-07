@@ -13,15 +13,12 @@ steps:
     displayName: Construir
     inputs:
       gradleWrapperFile: 'gradlew'
-      tasks: 'build'
+      tasks: 'build jacocoTestReport'
       publishJUnitResults: true
       testResultsFiles: '**/TEST-*.xml'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.11'
-      jdkArchitectureOption: 'x86'
       sonarQubeRunAnalysis: false
       spotBugsAnalysis: false
-
 
 #  - task: Maven@4
 #    displayName: Construir
