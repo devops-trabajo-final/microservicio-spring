@@ -10,10 +10,9 @@ trigger:
 
 steps:
   - task: Gradle@3
-    displayName: Construir
     inputs:
       gradleWrapperFile: 'gradlew'
-      tasks: 'build jacocoTestReport'
+      tasks: 'build'
       publishJUnitResults: true
       testResultsFiles: '**/TEST-*.xml'
       javaHomeOption: 'JDKVersion'
