@@ -82,7 +82,7 @@ steps:
     displayName: construir imagen
     inputs:
       containerRegistry: 'docker-devops'
-      repository: 'patowagen/microservicio-spring'
+      repository: ''
       command: 'build'
       Dockerfile: '**/Dockerfile'
       tags: latest
@@ -91,7 +91,7 @@ steps:
     displayName: Lanzar imagen 
     inputs:
       containerRegistry: 'docker-devops'
-      repository: 'patowagen/microservicio-spring'
+      repository: ''
       command: 'push'
       tags: 'latest'
 
