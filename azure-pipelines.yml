@@ -6,14 +6,125 @@
 trigger:
 - feature-ms-patricioGuerra-mensaje
 
-pool:
-  vmImage: ubuntu-latest
+pool: 
+  #vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  - task: Gradle@3
+    displayName: Construir
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      tasks: 'build'
+      publishJUnitResults: true
+      testResultsFiles: '**/TEST-*.xml'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      jdkArchitectureOption: 'x86'
+      sonarQubeRunAnalysis: false
+      spotBugsAnalysis: false
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+
+#  - task: Maven@4
+#    displayName: Construir
+#    inputs:
+#      mavenPomFile: 'pom.xml'
+#      publishJUnitResults: true
+#      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+#      codeCoverageToolOption: 'JaCoCo'
+#      javaHomeOption: 'JDKVersion'
+#      mavenVersionOption: 'Default'
+#      mavenAuthenticateFeed: false
+#      effectivePomSkip: false
+#      sonarQubeRunAnalysis: false
+
+  - task: CopyFiles@2
+    displayName: Copiar datos
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)'
+      contents: |
+        **/build/libs/*.jar
+        **/build/**/*.xml
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publicar
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: appJar
+      publishLocation: 'Container'
+
+  - task: DownloadBuildArtifacts@0
+    displayName: Descargar
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'appJar'
+      downloadPath: '$(Pipeline.Workspace)'
+
+
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'sonarcloud_final'
+      organization: 'devops-trabajo-final'
+      scannerMode: 'MSBuild'
+      projectKey: 'devops-trabajo-final_microservicio-spring'
+      projectName: 'microservicio-spring'
+  
+
+
+  - task: Gradle@3
+    displayName: Sonar Cloud Analisis
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      tasks: 'sonarqube'
+      publishJUnitResults: true
+      testResultsFiles: '**/TEST-*.xml'
+      javaHomeOption: 'JDKVersion'
+      sonarQubeRunAnalysis: true
+      sqGradlePluginVersionChoice: 'specify'
+      sonarQubeGradlePluginVersion: '3.3'
+      spotBugsAnalysis: false
+      spotBugsGradlePluginVersionChoice: 'specify'
+
+  - task: DockerInstaller@0
+    inputs:
+      dockerVersion: '17.09.0-ce'
+
+  - task: Docker@2
+    displayName: iniciar docker
+    inputs:
+      containerRegistry: 'docker-devops'
+      command: 'login'
+
+  - task: Docker@2
+    displayName: construir imagen
+    inputs:
+      containerRegistry: 'docker-devops'
+      repository: 'patowagen/microservicio-spring'
+      command: 'build'
+      Dockerfile: '**/Dockerfile'
+      tags: latest
+
+  - task: Docker@2
+    displayName: Lanzar imagen 
+    inputs:
+      containerRegistry: 'docker-devops'
+      repository: 'patowagen/microservicio-spring'
+      command: 'push'
+      tags: 'latest'
+
+  - task: KubectlInstaller@0
+    inputs:
+      kubectlVersion: 'latest'
+    displayName: Instalacion Kubectl
+
+
+  - task: Kubernetes@1
+    displayName: Kubernetes container deploy
+    inputs:
+      connectionType: 'None'
+      namespace: 'default'
+      command: 'apply'
+      arguments: '-f deployment-app.yaml'
+      secretType: 'dockerRegistry'
+      containerRegistryType: 'Azure Container Registry'
