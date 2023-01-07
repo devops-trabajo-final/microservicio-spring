@@ -19,67 +19,54 @@ steps:
       sonarQubeRunAnalysis: false
       spotBugsAnalysis: false
 
-#  - task: Maven@4
-#    displayName: Construir
+#  - task: CopyFiles@2
+#    displayName: Copiar datos
 #    inputs:
-#      mavenPomFile: 'pom.xml'
-#      publishJUnitResults: true
-#      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-#      codeCoverageToolOption: 'JaCoCo'
-#      javaHomeOption: 'JDKVersion'
-#      mavenVersionOption: 'Default'
-#      mavenAuthenticateFeed: false
-#      effectivePomSkip: false
-#      sonarQubeRunAnalysis: false
+#      sourceFolder: '$(Build.SourcesDirectory)'
+#      contents: |
+#        **/build/libs/*.jar
+#        **/build/**/*.xml
+#      targetFolder: '$(Build.ArtifactStagingDirectory)'
 
-  - task: CopyFiles@2
-    displayName: Copiar datos
-    inputs:
-      sourceFolder: '$(Build.SourcesDirectory)'
-      contents: |
-        **/build/libs/*.jar
-        **/build/**/*.xml
-      targetFolder: '$(Build.ArtifactStagingDirectory)'
+#  - task: PublishBuildArtifacts@1
+#    displayName: Publicar
+#    inputs:
+#      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+#      artifactName: appJar
+#      publishLocation: 'Container'
 
-  - task: PublishBuildArtifacts@1
-    displayName: Publicar
-    inputs:
-      pathToPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: appJar
-      publishLocation: 'Container'
-
-  - task: DownloadBuildArtifacts@0
-    displayName: Descargar
-    inputs:
-      buildType: 'current'
-      downloadType: 'single'
-      artifactName: 'appJar'
-      downloadPath: '$(Pipeline.Workspace)'
+#  - task: DownloadBuildArtifacts@0
+#    displayName: Descargar
+#    inputs:
+#      buildType: 'current'
+#      downloadType: 'single'
+#      artifactName: 'appJar'
+#      downloadPath: '$(Pipeline.Workspace)'
 
 
-  - task: SonarCloudPrepare@1
-    inputs:
-      SonarCloud: 'sonarcloud_final'
-      organization: 'devops-trabajo-final'
-      scannerMode: 'MSBuild'
-      projectKey: 'devops-trabajo-final_microservicio-spring'
-      projectName: 'microservicio-spring'
+ # - task: SonarCloudPrepare@1
+ #   inputs:
+ #     SonarCloud: 'sonarcloud_final'
+ #     organization: 'devops-trabajo-final'
+ #     scannerMode: 'MSBuild'
+ #     projectKey: 'devops-trabajo-final_microservicio-spring'
+ #     projectName: 'microservicio-spring'
   
 
 
-  - task: Gradle@3
-    displayName: Sonar Cloud Analisis
-    inputs:
-      gradleWrapperFile: 'gradlew'
-      tasks: 'sonarqube'
-      publishJUnitResults: true
-      testResultsFiles: '**/TEST-*.xml'
-      javaHomeOption: 'JDKVersion'
-      sonarQubeRunAnalysis: true
-      sqGradlePluginVersionChoice: 'specify'
-      sonarQubeGradlePluginVersion: '3.3'
-      spotBugsAnalysis: false
-      spotBugsGradlePluginVersionChoice: 'specify'
+#  - task: Gradle@3
+#    displayName: Sonar Cloud Analisis
+#    inputs:
+#      gradleWrapperFile: 'gradlew'
+#      tasks: 'sonarqube'
+#      publishJUnitResults: true
+#      testResultsFiles: '**/TEST-*.xml'
+#      javaHomeOption: 'JDKVersion'
+#      sonarQubeRunAnalysis: true
+#      sqGradlePluginVersionChoice: 'specify'
+#      sonarQubeGradlePluginVersion: '3.3'
+#      spotBugsAnalysis: false
+#      spotBugsGradlePluginVersionChoice: 'specify'
 
   - task: DockerInstaller@0
     inputs:
