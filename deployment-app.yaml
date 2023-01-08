@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: labpguerra
-        image: patricioguerra/labpguerra:latest
+        image: patowagen/microservicio-spring:latest
         ports:
         - containerPort: 8080
