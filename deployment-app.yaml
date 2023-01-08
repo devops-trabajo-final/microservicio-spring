@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: labpguerra
+  labels:
+    app: labpguerra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: labpguerra
+  template:
+    metadata:
+      labels:
+        app: labpguerra
+    spec:
+      containers:
+      - name: labpguerra
+        image: patricioguerra/labpguerra:latest
+        ports:
+        - containerPort: 8080
