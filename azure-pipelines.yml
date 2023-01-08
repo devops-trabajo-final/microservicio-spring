@@ -5,7 +5,7 @@
 
 trigger:
 - feature-ms-patricioGuerra-mensaje
-
+Pool: Default
   #vmImage: ubuntu-latest
 
 steps:
