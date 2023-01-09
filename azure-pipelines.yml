@@ -67,7 +67,7 @@ steps:
      sqGradlePluginVersionChoice: 'specify'
      sonarQubeGradlePluginVersion: '3.3'
      spotBugsAnalysis: false
-  displayName: SonarCloud Analysis
+   displayName: SonarCloud Analysis
 
 
 
