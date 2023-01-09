@@ -53,6 +53,7 @@ steps:
       scannerMode: 'MSBuild'
       projectKey: 'devops-trabajo-final_microservicio-spring'
       projectName: 'microservicio-spring'
+      projectVersion: '2.6.0'
   
 
 
