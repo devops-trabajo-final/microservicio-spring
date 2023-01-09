@@ -50,10 +50,7 @@ steps:
     inputs:
       SonarCloud: 'sonarcloud_final'
       organization: 'devops-trabajo-final'
-      scannerMode: 'MSBuild'
-      projectKey: 'devops-trabajo-final_microservicio-spring'
-      projectName: 'microservicio-spring'
-      #projectVersion: '2.6.0'
+      scannerMode: 'Other'
   
 
   - task: Gradle@3
