@@ -5,8 +5,8 @@
 
 trigger:
 - feature-ms-patricioGuerra-mensaje
-pool: 'Default'
- #vmImage: ubuntu-latest
+#pool: 'Default'
+vmImage: ubuntu-latest
 
 steps:
   - task: Gradle@3
@@ -18,6 +18,7 @@ steps:
       javaHomeOption: 'JDKVersion'
       sonarQubeRunAnalysis: false
       spotBugsAnalysis: false
+    displayName: Construccion Proyecto Microservicio-Spring
     
 
 
@@ -39,7 +40,7 @@ steps:
      sqGradlePluginVersionChoice: 'specify'
      sonarQubeGradlePluginVersion: '3.3'
      spotBugsAnalysis: false
-    displayName: SonarCloud Analysis
+    displayName: Analisis Proyecto Microservicio-Spring
 
 
   - task: DockerInstaller@0
@@ -53,7 +54,7 @@ steps:
       command: 'login'
 
   - task: Docker@2
-    displayName: construir imagen
+    displayName: construir imagen 
     inputs:
       containerRegistry: 'docker-devops'
       repository: 'patowagen/microservicio-spring'
