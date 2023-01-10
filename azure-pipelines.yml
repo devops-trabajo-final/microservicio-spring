@@ -5,8 +5,8 @@
 
 trigger:
 - feature-ms-patricioGuerra-mensaje
-pool: 
- vmImage: ubuntu-latest
+pool:'Default' 
+ #vmImage: ubuntu-latest
 
 steps:
   - task: Gradle@3
@@ -22,28 +22,28 @@ steps:
     
 
 
-  - task: SonarCloudPrepare@1
-    inputs:
-      SonarCloud: 'sonarcloud_final'
-      organization: 'devops-trabajo-final'
-      scannerMode: 'MSBuild'
-      projectKey: 'devops-trabajo-final_microservicio-spring'
-      projectName: 'microservicio-spring'
-      projectVersion: '2.6.0'
+#  - task: SonarCloudPrepare@1
+#    inputs:
+#      SonarCloud: 'sonarcloud_final'
+#      organization: 'devops-trabajo-final'
+#      scannerMode: 'MSBuild'
+#      projectKey: 'devops-trabajo-final_microservicio-spring'
+#      projectName: 'microservicio-spring'
+#      projectVersion: '2.6.0'
   
 
-  - task: Gradle@3
-    inputs:
-     gradleWrapperFile: 'gradlew'
-     tasks: 'sonarqube'
-     publishJUnitResults: true
-     testResultsFiles: '**/TEST-*.xml'
-     javaHomeOption: 'JDKVersion'
-     sonarQubeRunAnalysis: true
-     sqGradlePluginVersionChoice: 'specify'
-     sonarQubeGradlePluginVersion: '3.3'
-     spotBugsAnalysis: false
-    displayName: Analisis Proyecto Microservicio-Spring
+#  - task: Gradle@3
+#    inputs:
+#     gradleWrapperFile: 'gradlew'
+#     tasks: 'sonarqube'
+#     publishJUnitResults: true
+#     testResultsFiles: '**/TEST-*.xml'
+#     javaHomeOption: 'JDKVersion'
+#     sonarQubeRunAnalysis: true
+#     sqGradlePluginVersionChoice: 'specify'
+#     sonarQubeGradlePluginVersion: '3.3'
+#     spotBugsAnalysis: false
+#    displayName: Analisis Proyecto Microservicio-Spring
 
 
   - task: DockerInstaller@0
